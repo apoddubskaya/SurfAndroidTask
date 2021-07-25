@@ -1,6 +1,9 @@
 package com.example.surfandroidtask.ui
 
 import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class ListViewModel: ViewModel() {
+@HiltViewModel
+class ListViewModel @Inject constructor(): ViewModel() {
 }
