@@ -1,4 +1,4 @@
-package com.example.surfandroidtask.ui
+package com.example.surfandroidtask.ui.list
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -17,6 +17,8 @@ class ListFragment : Fragment() {
 
     private val viewModel: ListViewModel by activityViewModels()
 
+    private lateinit var filmsAdapter: FilmsAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -27,7 +29,13 @@ class ListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // view model
+
+        filmsAdapter = FilmsAdapter()
+        binding.recyclerView.adapter = filmsAdapter
+
+        viewModel.films.observe(viewLifecycleOwner) {
+            filmsAdapter.setData(it)
+        }
     }
 
     override fun onDestroyView() {
