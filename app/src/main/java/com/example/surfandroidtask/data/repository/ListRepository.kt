@@ -1,5 +1,6 @@
-package com.example.surfandroidtask.data
+package com.example.surfandroidtask.data.repository
 
+import com.example.surfandroidtask.data.Film
 import javax.inject.Inject
 
 class ListRepository @Inject constructor() {

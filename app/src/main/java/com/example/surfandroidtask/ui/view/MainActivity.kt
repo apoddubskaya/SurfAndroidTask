@@ -1,4 +1,4 @@
-package com.example.surfandroidtask.ui
+package com.example.surfandroidtask.ui.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

@@ -41,7 +41,7 @@
     <CheckBox
         android:id="@+id/film_is_favourite"
         android:button="@drawable/favourite_icon_selector"
-        android:buttonTint="@color/purple_200"
+        android:buttonTint="#004DF7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -1,4 +1,4 @@
-package com.example.surfandroidtask.ui.list
+package com.example.surfandroidtask.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.View

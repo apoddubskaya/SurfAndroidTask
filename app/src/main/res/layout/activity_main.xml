@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.MainActivity">
+    tools:context=".ui.view.MainActivity">
 
     <fragment
         android:id="@+id/fragment"
-        android:name="com.example.surfandroidtask.ui.list.ListFragment"
+        android:name="com.example.surfandroidtask.ui.view.ListFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
