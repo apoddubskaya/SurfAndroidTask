@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.activityViewModels
 import com.example.surfandroidtask.data.Film
 import com.example.surfandroidtask.databinding.FragmentListBinding
@@ -35,8 +36,7 @@ class ListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        filmsAdapter = FilmsAdapter()
-        binding.recyclerView.adapter = filmsAdapter
+        setAdapter()
 
         viewModel.films.observe(viewLifecycleOwner) {
             when (it) {
@@ -45,6 +45,25 @@ class ListFragment : Fragment() {
                 is Resource.Loading -> showLoading()
             }
         }
+
+        binding.search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                viewModel.searchFilms(newText)
+                return false
+            }
+
+        })
+    }
+
+    private fun setAdapter() {
+        filmsAdapter = FilmsAdapter() {
+            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+        }
+        binding.recyclerView.adapter = filmsAdapter
     }
 
     private fun showData(data: List<Film>) = filmsAdapter.setData(data)

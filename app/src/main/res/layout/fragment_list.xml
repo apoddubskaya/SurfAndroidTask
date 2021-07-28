@@ -5,13 +5,15 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.view.ListFragment">
+    tools:context=".ui.view.ListFragment"
+    android:background="@color/cardview_shadow_start_color">
 
-        <TextView
+        <androidx.appcompat.widget.SearchView
             android:id="@+id/search"
+            android:background="@color/white"
+            android:layout_margin="8dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Search"/>
+            android:layout_height="wrap_content"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"

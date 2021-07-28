@@ -5,17 +5,28 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.surfandroidtask.R
 import com.example.surfandroidtask.data.Film
+import com.example.surfandroidtask.databinding.FilmListItemBinding
 
-class FilmsAdapter: RecyclerView.Adapter<FilmsAdapter.ViewHolder>() {
+class FilmsAdapter(
+    private val onFilmClickListener: (String) -> Unit
+): RecyclerView.Adapter<FilmsAdapter.ViewHolder>() {
 
     private val films = ArrayList<Film>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.film_list_item, parent, false)
-        return ViewHolder(view)
+        val binding = FilmListItemBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
+        return ViewHolder(binding).apply {
+            itemView.setOnClickListener {
+                onFilmClickListener(films[adapterPosition].title)
+            }
+        }
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -30,16 +41,17 @@ class FilmsAdapter: RecyclerView.Adapter<FilmsAdapter.ViewHolder>() {
         notifyDataSetChanged()
     }
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val title: TextView = itemView.findViewById(R.id.film_title)
-        private val description: TextView = itemView.findViewById(R.id.film_description)
-        private val date: TextView = itemView.findViewById(R.id.film_date)
-
+    class ViewHolder(private val binding: FilmListItemBinding)
+        :RecyclerView.ViewHolder(binding.root) {
         fun bind(film: Film) {
-            title.text = film.title
-            description.text = film.description
-            date.text = film.date
-
+            binding.apply {
+                filmTitle.text = film.title
+                filmDescription.text = film.description
+                filmDate.text = film.date
+                Glide.with(filmPicture.context)
+                    .load(film.posterPath)
+                    .into(filmPicture)
+            }
         }
     }
 }

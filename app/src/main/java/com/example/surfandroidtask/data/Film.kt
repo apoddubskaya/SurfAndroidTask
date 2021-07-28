@@ -5,5 +5,6 @@ data class Film(
         val title: String,
         val description: String,
         val date: String,
+        val posterPath: String,
         val isFavourite: Boolean
 )
