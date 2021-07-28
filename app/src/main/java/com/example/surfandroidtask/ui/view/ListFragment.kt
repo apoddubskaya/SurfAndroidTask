@@ -60,9 +60,11 @@ class ListFragment : Fragment() {
     }
 
     private fun setAdapter() {
-        filmsAdapter = FilmsAdapter() {
-            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
-        }
+        filmsAdapter = FilmsAdapter(
+            { title -> Toast.makeText(context, title, Toast.LENGTH_SHORT).show() },
+            {filmId, isChecked -> viewModel.onCheckedChangeHandler(filmId, isChecked)}
+
+        )
         binding.recyclerView.adapter = filmsAdapter
     }
 

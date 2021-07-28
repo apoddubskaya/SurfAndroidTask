@@ -11,7 +11,8 @@ import com.example.surfandroidtask.data.Film
 import com.example.surfandroidtask.databinding.FilmListItemBinding
 
 class FilmsAdapter(
-    private val onFilmClickListener: (String) -> Unit
+    private val onFilmClickListener: (String) -> Unit,
+    private val onFavouriteCheckedChange: (Int, Boolean) -> Unit
 ): RecyclerView.Adapter<FilmsAdapter.ViewHolder>() {
 
     private val films = ArrayList<Film>()
@@ -30,7 +31,7 @@ class FilmsAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(films[position])
+        holder.bind(films[position], onFavouriteCheckedChange)
     }
 
     override fun getItemCount() = films.size
@@ -43,7 +44,7 @@ class FilmsAdapter(
 
     class ViewHolder(private val binding: FilmListItemBinding)
         :RecyclerView.ViewHolder(binding.root) {
-        fun bind(film: Film) {
+        fun bind(film: Film, onFavouriteCheckedChange: (Int, Boolean) -> Unit) {
             binding.apply {
                 filmTitle.text = film.title
                 filmDescription.text = film.description
@@ -51,6 +52,12 @@ class FilmsAdapter(
                 Glide.with(filmPicture.context)
                     .load(film.posterPath)
                     .into(filmPicture)
+                filmIsFavourite.setOnCheckedChangeListener(null)
+                filmIsFavourite.isChecked = film.isFavourite
+                filmIsFavourite.setOnCheckedChangeListener { _, checked ->
+                    film.isFavourite = checked
+                    onFavouriteCheckedChange(film.id, checked)
+                }
             }
         }
     }

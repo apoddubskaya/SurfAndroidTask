@@ -45,4 +45,13 @@ class ListViewModel @Inject constructor(
             }
         }
     }
+
+    fun onCheckedChangeHandler(filmId: Int, checked: Boolean) {
+        viewModelScope.launch(Dispatchers.IO) {
+            if (checked)
+                repository.addFavourite(filmId)
+            else
+                repository.removeFavourite(filmId)
+        }
+    }
 }
