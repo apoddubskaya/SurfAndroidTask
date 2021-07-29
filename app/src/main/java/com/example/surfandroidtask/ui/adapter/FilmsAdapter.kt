@@ -51,6 +51,7 @@ class FilmsAdapter(
                 filmDate.text = film.date
                 Glide.with(filmPicture.context)
                     .load(film.posterPath)
+                    .placeholder(R.drawable.placeholder_poster)
                     .into(filmPicture)
                 filmIsFavourite.setOnCheckedChangeListener(null)
                 filmIsFavourite.isChecked = film.isFavourite

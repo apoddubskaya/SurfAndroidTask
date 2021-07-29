@@ -41,7 +41,7 @@ class ListFragment : Fragment() {
         viewModel.films.observe(viewLifecycleOwner) {
             when (it) {
                 is Resource.Success -> showData(it.data)
-                is Resource.Error -> showError(it.message)
+                is Resource.Error -> showError()
                 is Resource.Loading -> showLoading()
             }
         }
@@ -57,6 +57,10 @@ class ListFragment : Fragment() {
             }
 
         })
+
+        binding.retryButton.setOnClickListener {
+            viewModel.retryGetData()
+        }
     }
 
     private fun setAdapter() {
@@ -68,14 +72,50 @@ class ListFragment : Fragment() {
         binding.recyclerView.adapter = filmsAdapter
     }
 
-    private fun showData(data: List<Film>) = filmsAdapter.setData(data)
+    private fun hideError() {
+        binding.errorTextView.visibility = View.GONE
+        binding.retryButton.visibility = View.GONE
+    }
 
-    private fun showError(message: String) {
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    private fun hideEmptySearchResults() {
+        binding.emptySearchResultsTextView.visibility = View.GONE
+    }
+
+    private fun hideLoading() {
+        binding.progressBarHorizontal.visibility = View.GONE
+    }
+
+    private fun hideRecyclerView() {
+        binding.recyclerView.visibility = View.GONE
+    }
+
+    private fun showData(data: List<Film>) {
+        hideLoading()
+        hideError()
+        if (data.isEmpty()) {
+            hideRecyclerView()
+            hideError()
+            binding.emptySearchResultsTextView.visibility = View.VISIBLE
+            binding.emptySearchResultsTextView.text =
+                "По запросу \"${binding.search.query}\" ничего не найдено"
+        }
+        else {
+            hideEmptySearchResults()
+            binding.recyclerView.visibility = View.VISIBLE
+            filmsAdapter.setData(data)
+        }
+    }
+
+    private fun showError() {
+        hideLoading()
+        hideRecyclerView()
+        hideEmptySearchResults()
+        binding.errorTextView.visibility = View.VISIBLE
+        binding.retryButton.visibility = View.VISIBLE
     }
 
     private fun showLoading() {
-        Toast.makeText(context, "Loading..", Toast.LENGTH_SHORT).show()
+        binding.progressBarHorizontal.visibility = View.VISIBLE
     }
 
     override fun onDestroyView() {

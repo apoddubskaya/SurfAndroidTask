@@ -6,7 +6,10 @@ import com.example.surfandroidtask.data.room.FavouritesDao
 import com.example.surfandroidtask.data.room.FavouritesEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.HashSet
 
 const val IMAGE_URL = "https://image.tmdb.org/t/p/w154"
 
@@ -16,10 +19,10 @@ class ListRepository @Inject constructor(
 ) {
     suspend fun getFilms(query: String): List<Film> {
         return withContext(Dispatchers.IO) {
-            val favs = favouritesDao.loadFavourites()
-            val favsSet = HashSet<Int>()
-            for (f in favs)
-                favsSet.add(f.filmId)
+            val favourites = favouritesDao.loadFavourites()
+            val favouritesSet = HashSet<Int>()
+            for (f in favourites)
+                favouritesSet.add(f.filmId)
 
             val response = if (query.isBlank())
                 apiService.getFilms()
@@ -28,13 +31,26 @@ class ListRepository @Inject constructor(
                 Film(
                     id = it.id,
                     title = it.title,
-                    date = it.releaseDate,
+                    date = formatDate(it.releaseDate),
                     description = it.description,
                     posterPath = IMAGE_URL + it.posterPath,
-                    isFavourite = favsSet.contains(it.id)
+                    isFavourite = favouritesSet.contains(it.id)
                 )
             }
         }
+    }
+
+    private fun formatDate(dateString: String?): String {
+        if (dateString == null)
+            return ""
+        val parser = SimpleDateFormat("yyyy-MM-dd", Locale("ru"))
+        val date = try {
+            parser.parse(dateString)
+        } catch (e: Exception) {
+            return ""
+        }
+        val formatter = SimpleDateFormat("dd MMMM yyyy", Locale("ru"))
+        return if (date == null) dateString else formatter.format(date)
     }
 
     suspend fun addFavourite(filmId: Int) = favouritesDao

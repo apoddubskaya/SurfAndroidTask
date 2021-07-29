@@ -1,0 +1,7 @@
+- Вынести dimensions в resources
+- Реализовать закругление углов для SearchView
+- Реализовать начальный progress bar
+- Реализовать pull-to-refresh
+- 
+
+Также не поняла когда отобажать ошибку в Snackbar.

@@ -25,7 +25,7 @@ class ListViewModel @Inject constructor(
 
     fun searchFilms(query: String?) {
         if (query == null) {
-            _films.value = Resource.Error("todo: some error")
+            _films.value = Resource.Error
             return
         }
         if (query == lastQuery)
@@ -41,7 +41,7 @@ class ListViewModel @Inject constructor(
                 _films.value = Resource.Success(repository.getFilms(query))
             }
             catch(e: Exception) {
-                _films.value = Resource.Error(e.message ?: "todo: empty exception msg")
+                _films.value = Resource.Error
             }
         }
     }
@@ -53,5 +53,9 @@ class ListViewModel @Inject constructor(
             else
                 repository.removeFavourite(filmId)
         }
+    }
+
+    fun retryGetData() {
+        getFilmsData(lastQuery)
     }
 }

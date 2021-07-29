@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Каталог фильмов</string>
+    <string name="error_text">Нам не удалось обработать ваш запрос. Попробуйте еще раз</string>
 </resources>
